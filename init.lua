@@ -3,19 +3,16 @@ local options = { noremap = true }
 
 vim.keymap.set("i", "jk", "<Esc>", options)
 
-function InsertTabWrapper()
+vim.keymap.set('i', '<Tab>', function()
     local current_line = vim.api.nvim_get_current_line()
     local row, col = unpack(vim.api.nvim_win_get_cursor(0))
     local before = string.sub(current_line, 0, col)
     if string.match(before, '^%s*$') then
-      return "\"\\<Tab>\""
+      text = "\"\\<Tab>\""
     else
-      return "\"\\<C-p>\""
+      text = "\"\\<C-p>\""
     end
-end
-
-vim.keymap.set('i', '<Tab>', function()
-  return "<c-r>="..InsertTabWrapper().."<CR>"
+  return "<c-r>="..text.."<CR>"
 end, {expr = true})
 
 -- Bootstrap lazy.nvim
